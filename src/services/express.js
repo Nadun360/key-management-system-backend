@@ -1,15 +1,17 @@
 'use strict'
-
+require('dotenv/config');
 // const config = require('../config')
 const express = require('express')
+const router = express.Router()
 const morgan = require('morgan')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const helmet = require('helmet')
+const port = process.env.PORT;
 // const errorHandler = require('../middlewares/error-handler')
 // const apiRouter = require('../routes/api')
 // const passport = require('passport')
-const passportJwt = require('../services/passport')
+// const passportJwt = require('../services/passport')
 
 const app = express()
 app.use(bodyParser.json())
@@ -31,13 +33,13 @@ router.get('/', (req, res) => {
 
 
 exports.start = () => {
-  app.listen(process.env.PORT || 3000, (err) => {
+  app.listen(port || 4500, (err) => {
     if (err) {
       console.log(`Error : ${err}`)
       process.exit(-1)
     }
 
-    console.log(`${config.app} is running on port ${config.port}`)
+    console.log(`your app is running on port ${port}`)
   })
 }
 
