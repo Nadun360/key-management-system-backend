@@ -1,13 +1,16 @@
 'use strict'
-require('dotenv/config');
+
 // const config = require('../config')
 const express = require('express')
-const router = express.Router()
 const morgan = require('morgan')
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const helmet = require('helmet')
-const port = process.env.PORT;
+require('dotenv/config');
+
+const port = process.env.PORT
+
+route = express.Route();
 // const errorHandler = require('../middlewares/error-handler')
 // const apiRouter = require('../routes/api')
 // const passport = require('passport')
@@ -25,21 +28,29 @@ app.use(morgan('combined'))
 // app.use('/api', apiRouter)
 // app.use(errorHandler.handleNotFound)
 // app.use(errorHandler.handleError)
+var jar = {
+	name: Lakshan,
+	School: Kegalu Vidyalaya,
+	Age: 16
+}
 
 router.get('/', (req, res) => {
-	// const today = new Date();
-	res.send('<h1>Hello their!</h1>')
+	const today = new Date();
+	res.send(`You logged in at ${today}`)
 })
 
+router.get('/player', (req, res) => {
+	res.send(jar)
+})
 
 exports.start = () => {
-  app.listen(port || 4500, (err) => {
+  app.listen(port || 4000, (err) => {
     if (err) {
       console.log(`Error : ${err}`)
       process.exit(-1)
     }
 
-    console.log(`your app is running on port ${port}`)
+    console.log(`Your app is running on port ${port}`)
   })
 }
 
