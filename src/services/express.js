@@ -10,7 +10,7 @@ require('dotenv/config');
 
 const port = process.env.PORT
 
-route = express.Route();
+const router = express.Router();
 // const errorHandler = require('../middlewares/error-handler')
 // const apiRouter = require('../routes/api')
 // const passport = require('passport')
@@ -22,6 +22,10 @@ app.use(cors())
 app.use(helmet())
 app.use(morgan('combined'))
 
+
+
+app.use('/', router)
+
 // passport.use('jwt', passportJwt.jwt)
 // app.use(passport.initialize())
 
@@ -29,8 +33,8 @@ app.use(morgan('combined'))
 // app.use(errorHandler.handleNotFound)
 // app.use(errorHandler.handleError)
 var jar = {
-	name: Lakshan,
-	School: Kegalu Vidyalaya,
+	name: 'Lakshan',
+	School: 'Kegalu Vidyalaya',
 	Age: 16
 }
 
