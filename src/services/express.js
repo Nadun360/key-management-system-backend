@@ -27,8 +27,8 @@ app.use(morgan('combined'))
 // app.use(errorHandler.handleError)
 
 router.get('/', (req, res) => {
-	const today = new Date();
-	res.send(`we are on home page at ${today}`)
+	// const today = new Date();
+	res.send('<h1>Hello their!</h1>')
 })
 
 
