@@ -1,7 +1,2 @@
 *.env
-node_modules
-config
-models
-utils
-routes
-mysql.js
+/node_modules

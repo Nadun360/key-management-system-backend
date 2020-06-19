@@ -4,7 +4,7 @@
   "description": "This server is for CO226 final project.",
   "main": "index.js",
   "scripts": {
-    "start": "node src/index.js"
+    "start": "nodemon src/index.js"
   },
   "author": "Nadun Welikanda",
   "license": "ISC",
@@ -13,7 +13,12 @@
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "express-validation": "^3.0.5",
     "helmet": "^3.23.1",
-    "morgan": "^1.10.0"
+    "http-status": "^1.4.2",
+    "jsonwebtoken": "^8.5.1",
+    "morgan": "^1.10.0",
+    "mysql": "^2.18.1",
+    "uuidv1": "^1.6.14"
   }
 }
