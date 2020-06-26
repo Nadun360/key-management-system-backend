@@ -1,43 +1,45 @@
 'use strict'
-const mongoose = require('mongoose')
-// const bcrypt = require('bcrypt-nodejs')
-// const httpStatus = require('http-status')
+
+const client = require('../services/mysql')
 // const APIError = require('../utils/APIError')
-const Schema = mongoose.Schema
 
-
-const userSchema = new Schema({
-	first_name: {
-		type: String
-	},
-	last_name: {
-		type: String
-	},
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-    lowercase: true
-  },
-  password: {
-    type: String,
-    required: true,
-    minlength: 4,
-    maxlength: 128
-  },
-  active: {
-    type: Boolean,
-    default: false
-  },
-  role: {
-    type: String,
-    default: 'user',
-    enum: roles
-  },
-  date: {
-  	type: Date,
-  	default: Date.now
+exports.registering = async (user, callback) => {
+  if (user) {
+    // sql query to register a user
+    const sql_regi = `INSERT INTO users (Email, Name, Password, Activation_Key) VALUES ('${user.email}', '${user.name}', '${user.password}', '${user.activation_key}')`
+    
+    // executing the query
+    await client.sendQuery(sql_regi, (err, result) => {
+      if(err) {
+        console.error(`SQLQueryError: ${err.sqlMessage}`)
+        callback(err.code)
+      } else {
+        console.log(`${user.email} was successfully registered!`)
+        callback(null)
+      }
+    })
   }
-})
+}
 
-module.exports = mongoose.model('users', userSchema)
+exports.findUser = async (email, callback) => {
+  if (email) {
+    // sql query to find a user
+    const sql_find = `SELECT * FROM users WHERE Email = '${email}'`
+
+    // executing the query
+    await client.sendQuery(sql_find, (err, result) => {
+      // Requested user not found
+      if (err) {
+        console.error(`SQLQueryError: ${err.sqlMessage}`)
+        callback(err.code, null)
+        // If the requested user is there or not 
+      } else if (!err && result.length <= 1) {
+        callback(null, result)
+        // Multiple user have registered using same email
+      } else {
+        console.error(`Duplicate instance found on ${email}`)
+        callback('Multiple users found', null)
+      }
+    })
+  }
+}

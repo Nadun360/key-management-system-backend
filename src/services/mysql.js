@@ -12,7 +12,7 @@ const client = mysql.createConnection({
 
 exports.connect = async () => {
   
-  	// setting up the database connection
+// setting up the database connection
 	await client.connect((err) => {
 		 // console.log('Mysql Connection is set.Waiting for DB configurations...')
 		if (err) {
@@ -21,7 +21,7 @@ exports.connect = async () => {
 		}
 	})
 
-	// check whether the database is exists. if not create it
+// check whether the database is exists. if not create it
 	var sql = 'CREATE DATABASE IF NOT EXISTS key_m_sys;USE key_m_sys;';
 	await client.query(sql, (err, results) => {
 		 // console.log('DB Connected')
@@ -31,7 +31,7 @@ exports.connect = async () => {
 	  	}
 	})
 
-	// creating users table
+// creating users table
 	var sql = 'CREATE TABLE IF NOT EXISTS users(ID INT AUTO_INCREMENT PRIMARY KEY, Email VARCHAR(50) UNIQUE NOT NULL, Password VARCHAR(128) NOT NULL, Name VARCHAR(50) NOT NULL, Activation_Key CHAR(36) UNIQUE, Active BOOLEAN DEFAULT false, Role VARCHAR(5) DEFAULT "user");'
 	await client.query(sql, (err, results) => {
 	  	if (err) {
@@ -44,5 +44,15 @@ exports.connect = async () => {
 
 }
 
-exports.client = client
+// we will use this to execute the sql queries 
+exports.sendQuery = async (sql, callback) => {
+	await client.query(sql, (err, results) => {
+	  	if (err) {
+	  		callback(err, null);
+	  	} else {
+	  		callback(null, results)
+	  	}
+	})
+}
+
 

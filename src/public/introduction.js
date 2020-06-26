@@ -3,6 +3,7 @@
 
 module.exports = {
 	Project : 'Key Management System',
+	Subject : 'CO226 - Database Systems',
 	Contributers : {
 		'E/16/054' : 'S.S.Basnayake',
 		'E/16/276' : 'G.K.B.H. Perera',
