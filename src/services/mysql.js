@@ -29,83 +29,93 @@ exports.connect = async () => {
   
 // setting up the database connection
 	await client.connect((err) => {
-		 // console.log('Mysql Connection is set.Waiting for DB configurations...')
 		if (err) {
 			console.log(`Could not connect to Mysql because of ${err.code}`)
 			process.exit(1)
 		}
+		// else
+		// 	console.log('Mysql Connection is set.Waiting for DB configurations...')
 	})
 
 // Check whether the database is already exists. If not create it
 	await client.query(sql.database.create, (err, results) => {
-		 // console.log('DB Created')
 	  	if (err) {
 	  		console.log(`Could not connect Database "Key_Management_System" because of ${err.code}`)
 			process.exit(1)
 	  	}
+	  	// else
+	  	// 	console.log('DB Created')
 	})
 
 // Use created database
 	await client.query(sql.database.use, (err, results) => {
-		 // console.log('Use database as a default database for following quries')
 	  	if (err) {
 	  		console.log(`Could not use Database "Key_Management_System" because of ${err.code}`)
 			process.exit(1)
 	  	}
+	  	// else
+	  	// 	console.log(`Use database "Key_Management_System" as the default database for following quries`)
 	})
 
 // creat table Security_Person
 	await client.query(sql.tables.securityPerson, (err, results) => {
-		// console.log('Security_Person created')
 	  	if (err) {
 	  		console.log(`Could not create table "Security_Person" because of ${err.code}`)
 			process.exit(1)
 	  	}
+	  	// else
+	  	// 	console.log('Security_Person created')
 	})
 
 // creat table Key_Detail
 	await client.query(sql.tables.keyDetail, (err, results) => {
-		// console.log('Key_Detail created')
 	  	if (err) {
 	  		console.log(`Could not create table "Key_Detail" because of ${err.code}`)
 			process.exit(1)
 	  	}
+	  	// else
+	  	// 	console.log('Key_Detail created')
 	})
 
 // creat table Building
 	await client.query(sql.tables.building, (err, results) => {
-		// console.log('Building created')
 	  	if (err) {
 	  		console.log(`Could not create table "Building" because of ${err.code}`)
 			process.exit(1)
 	  	}
+	  	// else
+	  	// 	console.log('Building created')
 	})
 
 // creat table Borrower
 	await client.query(sql.tables.borrower, (err, results) => {
-		// console.log('Borrower created')
 	  	if (err) {
 	  		console.log(`Could not create table "Borrower" because of ${err.code}`)
 			process.exit(1)
 	  	}
+	  	// else
+	  	// 	console.log('Borrower created')
 	})
 
 // creat table Can_Access
 	await client.query(sql.tables.canAccess, (err, results) => {
-		// console.log('Can_Access created')
 	  	if (err) {
 	  		console.log(`Could not create table "Can_Access" because of ${err.code}`)
 			process.exit(1)
 	  	}
+	  	// else
+	  	// 	console.log('Can_Access created')
 	})
 
 // creat table Borrows
 	await client.query(sql.tables.borrows, (err, results) => {
-		// console.log('Borrows created')
 	  	if (err) {
 	  		console.log(`Could not create table "Borrows" because of ${err.code}`)
 			process.exit(1)
 	  	}
+	  	else
+	  		// console.log('Borrows created')
+	  		console.log("Application is ready to use")
 	})
 }
 
