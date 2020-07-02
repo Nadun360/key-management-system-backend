@@ -15,8 +15,10 @@ exports.register = async (req, res, next) => {
     // Proceesing and making data object 
     const details = {
       email : req.body.email,
-      name : req.body.name,
       password : pwd,
+      fname : req.body.fname,
+      lname : req.body.lname,
+      designation : req.body.designation,
       activation_key : activationKey
     }
 
@@ -28,7 +30,7 @@ exports.register = async (req, res, next) => {
       } else {
         // Email already in the database
         if(err == "ER_DUP_ENTRY")
-          return res.status(httpStatus.UNAUTHORIZED).json({Error: 'Email already taken'})
+          return res.status(httpStatus.CONFLICT).json({Error: `Email ${details.email} is already taken`})
         // Internal server error
         else
           return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({Error: err})

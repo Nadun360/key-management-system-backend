@@ -1,20 +1,21 @@
 'use strict'
 
 const client = require('../services/mysql')
-// const APIError = require('../utils/APIError')
 
 exports.registering = async (user, callback) => {
   if (user) {
     // sql query to register a user
-    const sql_regi = `INSERT INTO users (Email, Name, Password, Activation_Key) VALUES ('${user.email}', '${user.name}', '${user.password}', '${user.activation_key}')`
+    const sql_regi = `INSERT INTO Security_Person (Email, Password, FName, LName, Designation, Activation_Key) VALUES ('${user.email}', '${user.password}', '${user.fname}', '${user.lname}', '${user.designation}', '${user.activation_key}');`
     
     // executing the query
     await client.sendQuery(sql_regi, (err, result) => {
       if(err) {
-        console.error(`SQLQueryError: ${err.sqlMessage}`)
+        if (err.code != "ER_DUP_ENTRY")
+          console.error(`SQLQueryError: ${err.sqlMessage}`)
+        
         callback(err.code)
       } else {
-        console.log(`${user.email} was successfully registered!`)
+        console.log(`User ${user.email} was successfully registered!`)
         callback(null)
       }
     })
@@ -24,7 +25,7 @@ exports.registering = async (user, callback) => {
 exports.findUser = async (email, callback) => {
   if (email) {
     // sql query to find a user
-    const sql_find = `SELECT * FROM users WHERE Email = '${email}'`
+    const sql_find = `SELECT * FROM Security_Person WHERE Email = '${email}';`
 
     // executing the query
     await client.sendQuery(sql_find, (err, result) => {
@@ -37,7 +38,7 @@ exports.findUser = async (email, callback) => {
         callback(null, result)
         // Multiple user have registered using same email
       } else {
-        console.error(`Duplicate instance found on ${email}`)
+        console.error(`Duplicate instance found on user ${email}`)
         callback('Multiple users found', null)
       }
     })
