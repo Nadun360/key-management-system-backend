@@ -26,9 +26,9 @@ exports.register = async (req, res, next) => {
       if (!err) {
         return res.status(httpStatus.CREATED).json({msg : `${details.email} was successfully registered!`})
       } else {
-        // User is already there
+        // Email already in the database
         if(err == "ER_DUP_ENTRY")
-          return res.status(httpStatus.CONFLICT).json({Error: 'Email already taken'})
+          return res.status(httpStatus.UNAUTHORIZED).json({Error: 'Email already taken'})
         // Internal server error
         else
           return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({Error: err})
