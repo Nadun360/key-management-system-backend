@@ -16,17 +16,17 @@ const sql = {
 		use: 'USE Key_Management_System;'
 	},
 	tables: {
-		securityPerson:'CREATE TABLE IF NOT EXISTS Security_Person(Security_ID INT AUTO_INCREMENT PRIMARY KEY, Email VARCHAR(60) UNIQUE NOT NULL, Password VARCHAR(128) NOT NULL, FName VARCHAR(20) NOT NULL, LName VARCHAR(30) NOT NULL, Designation VARCHAR(20), Activation_Key CHAR(36) NOT NULL, Active BOOLEAN DEFAULT false, Role VARCHAR(5) DEFAULT "user");',
+		securityPerson:'CREATE TABLE IF NOT EXISTS Security_Person(Security_ID INT AUTO_INCREMENT PRIMARY KEY, Email VARCHAR(60) UNIQUE NOT NULL, Password VARCHAR(128) NOT NULL, FName VARCHAR(20) NOT NULL, LName VARCHAR(30) NOT NULL, Designation VARCHAR(40), Activation_Key CHAR(36) NOT NULL, Active BOOLEAN DEFAULT true, Role VARCHAR(5) DEFAULT "admin");',
 		keyDetail: 'CREATE TABLE IF NOT EXISTS Key_Detail(Key_ID INT PRIMARY KEY, No_Of_Keys INT NOT NULL, Availability BOOLEAN NOT NULL);',
-		building: 'CREATE TABLE IF NOT EXISTS Building(Building_ID INT PRIMARY KEY, Building_Name VARCHAR(50) NOT NULL, Key_ID INT UNIQUE, FOREIGN KEY (Key_ID) REFERENCES Key_Detail (Key_ID)ON UPDATE CASCADE);',
-		borrower: 'CREATE TABLE IF NOT EXISTS Borrower(Borrower_ID INT PRIMARY KEY, FName VARCHAR(20) NOT NULL, LName VARCHAR(30) NOT NULL, Type_Of_Staff VARCHAR(20) NOT NULL, Designation VARCHAR(20));',
+		building: 'CREATE TABLE IF NOT EXISTS Building(Building_ID INT PRIMARY KEY, Building_Name VARCHAR(50) NOT NULL UNIQUE, Key_ID INT UNIQUE, FOREIGN KEY (Key_ID) REFERENCES Key_Detail (Key_ID)ON UPDATE CASCADE);',
+		borrower: 'CREATE TABLE IF NOT EXISTS Borrower(Borrower_ID INT AUTO_INCREMENT PRIMARY KEY, FName VARCHAR(20) NOT NULL, LName VARCHAR(30) NOT NULL, Type_Of_Staff VARCHAR(40) NOT NULL, Designation VARCHAR(40) NOT NULL, UNIQUE (FName, LName, Type_Of_Staff, Designation));',
 		canAccess: 'CREATE TABLE IF NOT EXISTS Can_Access(Building_ID INT, Borrower_ID INT, PRIMARY KEY (Building_ID, Borrower_ID), FOREIGN KEY (Building_ID) REFERENCES Building (Building_ID) ON UPDATE CASCADE,FOREIGN KEY (Borrower_ID) REFERENCES Borrower(Borrower_ID) ON UPDATE CASCADE);',
 		borrows: 'CREATE TABLE IF NOT EXISTS Borrows(Key_ID INT, Borrower_ID INT, Security_ID INT, Borrow_DateTime DATETIME, Status varchar(6), PRIMARY KEY (Key_ID, Borrower_ID, Security_ID, Borrow_DateTime), FOREIGN KEY (Key_ID) REFERENCES Key_Detail (Key_ID) ON UPDATE CASCADE, FOREIGN KEY (Borrower_ID) REFERENCES Borrower(Borrower_ID) ON UPDATE CASCADE, FOREIGN KEY (Security_ID) REFERENCES Security_Person (Security_ID) ON UPDATE CASCADE);'
 	}
 }
 
 exports.connect = async () => {
-  
+
 // setting up the database connection
 	await client.connect((err) => {
 		if (err) {
@@ -115,7 +115,7 @@ exports.connect = async () => {
 	  	}
 	  	else
 	  		// console.log('Borrows created')
-	  		console.log("Application is ready to use")
+	  		console.log("API is ready to use")
 	})
 }
 
@@ -129,5 +129,3 @@ exports.sendQuery = async (sql, callback) => {
 	  	}
 	})
 }
-
-

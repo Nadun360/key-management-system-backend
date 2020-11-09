@@ -13,6 +13,6 @@ router.get('/', (req, res) => {
 })
 
 // adding authentication routes for the application
-router.use('/api/auth', authRouter)
+router.use('/api', authRouter)
 
 module.exports = router

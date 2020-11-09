@@ -7,6 +7,7 @@ const httpStatus = require('http-status')
 const jwt = require('jsonwebtoken')
 const user = require('../models/user.model')
 
+
 exports.register = async (req, res, next) => {
   try {
     const activationKey = uuidv1()
@@ -26,18 +27,18 @@ exports.register = async (req, res, next) => {
     await user.registering(details, (err) => {
       // user successfully registered
       if (!err) {
-        return res.status(httpStatus.CREATED).json({msg : `${details.email} was successfully registered!`})
+        return res.status(httpStatus.CREATED).json({msg : `Please check ${details.email} to verify the account.`})
       } else {
         // Email already in the database
         if(err == "ER_DUP_ENTRY")
-          return res.status(httpStatus.CONFLICT).json({Error: `Email ${details.email} is already taken`})
+          return res.status(httpStatus.CONFLICT).json({Error: `Email ${details.email} is already registered`})
         // Internal server error
         else
           return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({Error: err})
       }
     })    
   } catch (err) {
-  	next(err)
+  	return next(err)
   }
 }
 
@@ -59,14 +60,46 @@ exports.login = async (req, res, next) => {
             return res.status(httpStatus.UNAUTHORIZED).json({Error : `email/password missmatch`})
             // user/password are correct
           } else {
-            const payload = {sub: result[0].ID}
-            const token = jwt.sign(payload, config.secret)
-            return res.status(httpStatus.OK).json({ token: token, name: result[0].Name, role: result[0].Role })
+            // user account is not activated
+            if (!result[0].Active)
+              return res.status(httpStatus.UNAUTHORIZED).json({Error : `User account ${req.body.email} is not activated!`})
+            // permission given to log in
+            else {
+              const user = {
+                id : result[0].Security_ID,
+                role : result[0].Role,
+                name: `${result[0].FName} ${result[0].LName}`,
+                designation : result[0].Designation
+              }
+              const token = jwt.sign(user, config.secret)
+              return res.status(httpStatus.OK).json({ token: token})
+            }
           }
         }
       }
     })
   } catch (err) {
-    next(err)
+    return next(err)
+  }
+}
+
+
+exports.getuser = async (req, res, next) => {
+  try {
+    if (req.authuser)
+      return res.status(httpStatus.CREATED).json({user : req.authuser})
+    else
+      return res.status(httpStatus.INTERNAL_SERVER_ERROR).json({Error: "user was not taken"})
+  } catch (err) {
+    return next(err)
+  }
+}
+
+
+exports.logout = async (req, res, next) => {
+  try {
+    return res.status(httpStatus.OK).json({ message: 'User logged out.' })
+  } catch (err) {
+    return next(err)
   }
 }

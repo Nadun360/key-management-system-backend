@@ -15,3 +15,11 @@ exports.register = {
 	    	.required()
 	}),
 }
+
+exports.getkey = {
+	body: Joi.object({
+	    keyID: Joi.number()
+	    	.integer()
+			.required(),
+	}),
+}

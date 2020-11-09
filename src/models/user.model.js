@@ -15,7 +15,7 @@ exports.registering = async (user, callback) => {
         
         callback(err.code)
       } else {
-        console.log(`User ${user.email} was successfully registered!`)
+        // console.log(`User ${user.email} was successfully registered!`)
         callback(null)
       }
     })
@@ -29,7 +29,7 @@ exports.findUser = async (email, callback) => {
 
     // executing the query
     await client.sendQuery(sql_find, (err, result) => {
-      // Requested user not found
+      // sql error happend
       if (err) {
         console.error(`SQLQueryError: ${err.sqlMessage}`)
         callback(err.code, null)

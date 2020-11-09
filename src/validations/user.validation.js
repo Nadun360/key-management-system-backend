@@ -20,7 +20,7 @@ exports.register = {
 	    	.regex(/[a-zA-Z]/)
 	    	.required(),
 	    designation: Joi.string()
-	    	.max(20)
+	    	.max(40)
 	    	.required()
 	}),
 }

@@ -10,5 +10,6 @@ module.exports = {
 		'E/16/351' : 'T.K.M. Shanaka',
 		'E/16/389' : 'V.H.L.N. Welikanda'
 	},
-	About : 'Simple introduction about the API will be shown here'
+	introduction : 'This is a simple REST API for our project Key-Management-System',
+	Our_Vision : 'To build a web application to simplify the proccess of handling key in any '
 }

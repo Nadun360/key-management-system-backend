@@ -15,3 +15,12 @@ exports.register = {
 	    	.required()
 	}),
 }
+
+
+exports.getbyid = {
+	body: Joi.object({
+	    buildingID: Joi.number()
+	    	.integer()
+			.required(),
+	}),
+}
